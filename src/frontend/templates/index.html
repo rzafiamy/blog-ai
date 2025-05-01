@@ -10,49 +10,53 @@
       theme: {
         extend: {
           colors: {
-            futuristic: '#00FFB2',
-            darkbg: '#0D0F11',
-            sidebg: '#15181D',
+            futuristic: '#00B289',
+            lightbg: '#F8FAFC',
+            headerbg: '#FFFFFF',
           },
         },
       },
     };
   </script>
 </head>
-<body class="bg-darkbg text-white font-sans">
-  <div class="flex min-h-screen">
-    <!-- Sidebar -->
-    <aside class="w-72 bg-sidebg p-6 shadow-lg">
-      <h2 class="text-2xl font-bold text-futuristic mb-4">🎙 Podcast Episodes</h2>
-      <ul id="episode-list" class="space-y-2 text-sm"></ul>
-
-      <h2 class="text-xl font-semibold text-futuristic mt-8">🔎 Filter Posts</h2>
-      <input id="search-input" type="text" placeholder="Search..."
-             class="w-full p-3 mt-3 bg-gray-700 text-sm text-white rounded focus:outline-none focus:ring-2 focus:ring-futuristic"/>
-    </aside>
-
-    <!-- Main Content -->
-    <main class="flex-1 p-10">
-      <header class="flex justify-between items-center mb-10">
-        <h1 class="text-4xl font-extrabold text-futuristic tracking-wide">Futuristic Blog</h1>
-        <nav class="space-x-6 text-futuristic text-lg">
+<body class="bg-lightbg text-gray-900 font-sans">
+  <div class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="bg-headerbg border-b border-gray-200 px-6 py-4">
+      <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-futuristic tracking-wide"><a href="/">Futuristic Blog</a></h1>
+        <nav class="space-x-4 text-futuristic text-base">
           <a href="/" class="hover:underline">Home</a>
           <a href="/admin" class="hover:underline">Admin</a>
         </nav>
-      </header>
+      </div>
+    </header>
 
-      <section id="post-content" class="prose prose-invert max-w-full text-gray-300"></section>
+    <!-- Search & Filters (Sticky inside content) -->
+    <div class="w-full border-b border-gray-200 bg-lightbg sticky top-0 z-40">
+      <div class="flex flex-col items-center justify-center w-full max-w-4xl mx-auto px-4 py-6 space-y-4">
+        <input id="search-input" type="text" placeholder="🔍 Search posts..."
+               class="w-full md:w-2/3 p-3 bg-white text-gray-800 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-futuristic" />
+        <div id="category-buttons" class="flex flex-wrap justify-center gap-3"></div>
+      </div>
+    </div>
+    
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 max-w-7xl mx-auto">
+      <section id="category-grid"></section>
 
       <div class="flex justify-between mt-10 text-futuristic">
         <a id="prev-post" href="#" class="hover:underline">⬅ Previous</a>
         <a id="next-post" href="#" class="hover:underline">Next ➡</a>
       </div>
     </main>
-  </div>
 
-  <footer class="bg-sidebg text-center text-futuristic p-4 mt-4 border-t border-gray-700">
-    &copy; 2025 Futuristic Blog — All rights reserved.
-  </footer>
+    <!-- Footer -->
+    <footer class="bg-white text-center text-futuristic p-4 border-t border-gray-200">
+      &copy; 2025 Futuristic Blog — All rights reserved.
+    </footer>
+  </div>
 
   <script src="/static/js/app.js"></script>
 </body>
