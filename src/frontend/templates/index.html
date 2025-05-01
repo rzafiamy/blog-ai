@@ -2,62 +2,149 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Futuristic Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Lemur Insights</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            futuristic: '#00B289',
-            lightbg: '#F8FAFC',
-            headerbg: '#FFFFFF',
+            'lemur-green': '#00CC66',
+            'bamboo-dark': '#1A3C34',
+            'forest-light': '#E6F5EC',
+            'header-bg': '#FFFFFF',
+            'accent-green': '#66FF99',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Poppins', 'sans-serif'],
           },
         },
       },
     };
   </script>
+  <link rel="stylesheet" href="/static/css/styles.css" />
 </head>
-<body class="bg-lightbg text-gray-900 font-sans">
+<body class="bg-forest-light text-bamboo-dark font-sans">
   <div class="min-h-screen flex flex-col">
     <!-- Header -->
-    <header class="bg-headerbg border-b border-gray-200 px-6 py-4">
+    <header class="bg-header-bg border-b border-gray-200 px-6 py-4 sticky top-0 z-50 shadow-md">
       <div class="max-w-7xl mx-auto flex justify-between items-center">
-        <h1 class="text-3xl font-bold text-futuristic tracking-wide"><a href="/">Futuristic Blog</a></h1>
-        <nav class="space-x-4 text-futuristic text-base">
-          <a href="/" class="hover:underline">Home</a>
-          <a href="/admin" class="hover:underline">Admin</a>
+        <h1 class="text-3xl font-bold text-lemur-green font-display tracking-wide">
+          <a href="/">AI Lemur Insights</a>
+        </h1>
+        <nav class="space-x-6 text-lemur-green text-base font-medium">
+          <a href="/" class="hover:text-accent-green transition">Home</a>
+          <button id="admin-btn" class="hover:text-accent-green transition">Admin</button>
         </nav>
       </div>
     </header>
 
-    <!-- Search & Filters (Sticky inside content) -->
-    <div class="w-full border-b border-gray-200 bg-lightbg sticky top-0 z-40">
+    <!-- Modal -->
+    <div id="admin-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+      <div class="bg-white rounded-lg shadow-xl w-full max-w-lg p-6 relative">
+        <!-- Close Button -->
+        <button id="close-modal" class="absolute top-2 right-2 text-gray-500 hover:text-lemur-green">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <!-- Login Form -->
+        <div id="login-form" class="space-y-4">
+          <h2 class="text-2xl font-display text-lemur-green">Admin Login</h2>
+          <form id="auth-form">
+            <div class="mb-4">
+              <label for="username" class="block text-sm font-medium text-bamboo-dark">Username</label>
+              <input type="text" id="username" class="w-full p-2 border border-lemur-green rounded-lg focus:ring-2 focus:ring-accent-green" required />
+            </div>
+            <div class="mb-4">
+              <label for="password" class="block text-sm font-medium text-bamboo-dark">Password</label>
+              <input type="password" id="password" class="w-full p-2 border border-lemur-green rounded-lg focus:ring-2 focus:ring-accent-green" required />
+            </div>
+            <button type="submit" class="w-full bg-lemur-green text-white px-4 py-2 rounded-lg hover:bg-accent-green flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+              </svg>
+              Login
+            </button>
+          </form>
+          <p id="login-error" class="text-red-500 text-sm hidden">Invalid credentials</p>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="admin-panel" class="space-y-6 hidden">
+          <h2 class="text-2xl font-display text-lemur-green">Manage Pages</h2>
+          <!-- Add/Edit Form -->
+          <form id="post-form" class="space-y-4">
+            <div>
+              <label for="title" class="block text-sm font-medium text-bamboo-dark">Title</label>
+              <input type="text" id="title" class="w-full p-2 border border-lemur-green rounded-lg focus:ring-2 focus:ring-accent-green" required />
+            </div>
+            <div>
+              <label for="author" class="block text-sm font-medium text-bamboo-dark">Author</label>
+              <input type="text" id="author" class="w-full p-2 border border-lemur-green rounded-lg focus:ring-2 focus:ring-accent-green" required />
+            </div>
+            <div>
+              <label for="category" class="block text-sm font-medium text-bamboo-dark">Category</label>
+              <input type="text" id="category" class="w-full p-2 border border-lemur-green rounded-lg focus:ring-2 focus:ring-accent-green" required />
+            </div>
+            <div>
+              <label for="section" class="block text-sm font-medium text-bamboo-dark">Section</label>
+              <input type="text" id="section" class="w-full p-2 border border-lemur-green rounded-lg focus:ring-2 focus:ring-accent-green" required />
+            </div>
+            <div>
+              <label for="content" class="block text-sm font-medium text-bamboo-dark">Content (Markdown)</label>
+              <textarea id="content" rows="6" class="w-full p-2 border border-lemur-green rounded-lg focus:ring-2 focus:ring-accent-green" required></textarea>
+            </div>
+            <button type="submit" class="w-full bg-lemur-green text-white px-4 py-2 rounded-lg hover:bg-accent-green flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+              Save Page
+            </button>
+          </form>
+          <!-- Page List -->
+          <div id="post-list" class="space-y-4"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search & Filters -->
+    <div class="w-full bg-forest-light sticky top-0 z-40 border-b border-gray-200">
       <div class="flex flex-col items-center justify-center w-full max-w-4xl mx-auto px-4 py-6 space-y-4">
-        <input id="search-input" type="text" placeholder="🔍 Search posts..."
-               class="w-full md:w-2/3 p-3 bg-white text-gray-800 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-futuristic" />
+        <div class="relative w-full md:w-2/3">
+          <input
+            id="search-input"
+            type="text"
+            placeholder="Search AI insights..."
+            class="w-full p-3 pl-10 bg-white text-bamboo-dark border border-lemur-green rounded-lg focus:outline-none focus:ring-2 focus:ring-accent-green transition"
+          />
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-lemur-green">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+          </svg>
+        </div>
         <div id="category-buttons" class="flex flex-wrap justify-center gap-3"></div>
       </div>
     </div>
-    
 
     <!-- Main Content -->
     <main class="flex-1 p-6 max-w-7xl mx-auto">
-      <section id="category-grid"></section>
-
-      <div class="flex justify-between mt-10 text-futuristic">
-        <a id="prev-post" href="#" class="hover:underline">⬅ Previous</a>
-        <a id="next-post" href="#" class="hover:underline">Next ➡</a>
+      <section id="category-grid" class="space-y-12"></section>
+      <div class="flex justify-between mt-10 text-lemur-green font-medium">
+        <a id="prev-post" href="#" class="hover:text-accent-green transition">⬅ Previous</a>
+        <a id="next-post" href="#" class="hover:text-accent-green transition">Next ➡</a>
       </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white text-center text-futuristic p-4 border-t border-gray-200">
-      &copy; 2025 Futuristic Blog — All rights reserved.
+    <footer class="bg-bamboo-dark text-center text-forest-light p-4 border-t border-lemur-green">
+      © 2025 AI Lemur Insights — Powered by Artificial Intelligence
     </footer>
   </div>
 
   <script src="/static/js/app.js"></script>
+  <script src="/static/js/admin.js"></script>
 </body>
 </html>

@@ -20,13 +20,24 @@ def verify_token(token, edit=False):
     expected = EDIT_TOKEN if edit else READ_TOKEN
     return token == expected
 
+# Hardcoded credentials (replace with database or auth service in production)
+ADMIN_CREDENTIALS = {
+    'username': 'admin',
+    'password': 'lemur123'
+}
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
+    if username == ADMIN_CREDENTIALS['username'] and password == ADMIN_CREDENTIALS['password']:
+        return jsonify({'token': EDIT_TOKEN})
+    return jsonify({'error': 'Invalid credentials'}), 401
+
 @app.route('/')
 def index():
     return render_template('index.html')
-
-@app.route('/admin')
-def admin():
-    return render_template('admin.html')
 
 @app.route('/pages', methods=['GET'])
 def get_pages():
@@ -47,7 +58,8 @@ def get_pages():
                 pages.append({
                     'id': str(md_file.relative_to(PAGES_DIR)),
                     'title': meta.get('title'),
-                    'category': md_file.parent.name,
+                    'category': md_file.parent.parent.name,
+                    'section': md_file.parent.name,
                     'author': meta.get('author'),
                     'date': meta.get('date')
                 })
@@ -82,7 +94,7 @@ def get_page(id):
             'title': meta.get('title'),
             'author': meta.get('author'),
             'date': meta.get('date'),
-            'content': html_content
+            'content': body  # Return raw markdown for editing
         })
 
 @app.route('/page', methods=['POST'])
