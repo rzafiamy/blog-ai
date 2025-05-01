@@ -1,0 +1,57 @@
+/* Custom futuristic styles */
+
+body {
+    background: linear-gradient(135deg, #1a202c, #2d3748);
+    font-family: 'Inter', sans-serif;
+}
+
+.prose-invert {
+    color: #e2e8f0;
+}
+
+.prose-invert h1,
+.prose-invert h2,
+.prose-invert h3 {
+    color: #68d391;
+}
+
+input,
+textarea {
+    border: 1px solid #68d391;
+    transition: all 0.3s ease;
+    background-color: #2d3748;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    box-shadow: 0 0 10px #68d391;
+    background-color: #1a202c;
+}
+
+button {
+    transition: all 0.3s ease;
+    background-color: #68d391;
+    color: #1a202c;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: bold;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(104, 211, 145, 0.5);
+}
+
+/* Lazy-loaded images */
+img.lazy {
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+}
+
+img.lazy.loaded {
+    opacity: 1;
+}

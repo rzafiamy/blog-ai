@@ -1,0 +1,28 @@
+futuristic-blog/
+├── .env
+├── Dockerfile
+├── docker-compose.yaml
+├── requirements.txt
+├── README.md
+├── src/
+│   ├── backend/
+│   │   ├── app.py
+│   │   ├── pages/
+│   │   │   ├── tech/
+│   │   │   │   ├── ai/
+│   │   │   │   │   ├── intro-to-ai.md
+│   │   │   ├── culture/
+│   │   │   │   ├── future-trends/
+│   │   │   │   │   ├── trends-2025.md
+│   ├── frontend/
+│   │   ├── static/
+│   │   │   ├── css/
+│   │   │   │   ├── styles.css
+│   │   │   ├── js/
+│   │   │   │   ├── app.js
+│   │   │   │   ├── admin.js
+│   │   │   ├── media/
+│   │   │   │   ├── placeholder.jpg
+│   │   ├── templates/
+│   │   │   ├── index.html
+│   │   │   ├── admin.html

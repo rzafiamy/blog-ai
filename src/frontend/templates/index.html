@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Futuristic Blog</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            futuristic: '#00FFB2',
+            darkbg: '#0D0F11',
+            sidebg: '#15181D',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-darkbg text-white font-sans">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside class="w-72 bg-sidebg p-6 shadow-lg">
+      <h2 class="text-2xl font-bold text-futuristic mb-4">🎙 Podcast Episodes</h2>
+      <ul id="episode-list" class="space-y-2 text-sm"></ul>
+
+      <h2 class="text-xl font-semibold text-futuristic mt-8">🔎 Filter Posts</h2>
+      <input id="search-input" type="text" placeholder="Search..."
+             class="w-full p-3 mt-3 bg-gray-700 text-sm text-white rounded focus:outline-none focus:ring-2 focus:ring-futuristic"/>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-10">
+      <header class="flex justify-between items-center mb-10">
+        <h1 class="text-4xl font-extrabold text-futuristic tracking-wide">Futuristic Blog</h1>
+        <nav class="space-x-6 text-futuristic text-lg">
+          <a href="/" class="hover:underline">Home</a>
+          <a href="/admin" class="hover:underline">Admin</a>
+        </nav>
+      </header>
+
+      <section id="post-content" class="prose prose-invert max-w-full text-gray-300"></section>
+
+      <div class="flex justify-between mt-10 text-futuristic">
+        <a id="prev-post" href="#" class="hover:underline">⬅ Previous</a>
+        <a id="next-post" href="#" class="hover:underline">Next ➡</a>
+      </div>
+    </main>
+  </div>
+
+  <footer class="bg-sidebg text-center text-futuristic p-4 mt-4 border-t border-gray-700">
+    &copy; 2025 Futuristic Blog — All rights reserved.
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
