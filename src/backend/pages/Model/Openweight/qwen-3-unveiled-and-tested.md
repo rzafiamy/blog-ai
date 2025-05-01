@@ -1,25 +1,22 @@
 ---
-title: Qwen 3 unveiled and tested
+title: Qwen 3 model series released !
 author: rzl
 image: https://camo.githubusercontent.com/8793b3b4014d538b367ec8819dcca85e79cb8d910c808fa7849e3cd85e2ebe79/68747470733a2f2f7169616e77656e2d7265732e6f73732d616363656c65726174652d6f766572736561732e616c6979756e63732e636f6d2f6c6f676f5f7177656e332e706e67
 date: 2025-05-01
 ---
-![Qwen 3 Logo](https://upload.wikimedia.org/wikipedia/commons/6/6e/Qwen_logo.png)
-
 > “Think deeper, act faster.” — Qwen 3 tagline
-
-## 🧠 Introduction
 
 Alibaba has officially unveiled **Qwen 3**, its most advanced open-source large language model (LLM) to date. This release marks a significant leap in AI innovation, introducing hybrid reasoning capabilities that aim to rival, and in some benchmarks surpass, models from OpenAI and Google. 
 
 ## 🚀 Key Features
 
-- **Hybrid Reasoning Modes**: Seamless switching between "thinking" mode for complex tasks and "non-thinking" mode for general-purpose interactions. 
-- **Model Variants**:
-  - *Dense Models*: 0.6B, 1.7B, 4B, 8B, 14B, 32B parameters.
-  - *Mixture-of-Experts (MoE) Models*: 30B-A3B, 235B-A22B. 
-- **Multilingual Support**: Trained on 36 trillion tokens across 119 languages and dialects. 
-- **Extended Context Window**: Supports up to 128K tokens for most models. 
+- ✅ **Hybrid Reasoning Modes**: Switches between "thinking" and "non-thinking" modes based on task complexity.
+- ✅ **Model Variants**:
+  - Dense: 0.6B, 1.7B, 4B, 8B, 14B, 32B parameters
+  - MoE: 30B-A3B, 235B-A22B
+- ✅ **Multilingual Support**: Trained on 36T tokens across 119 languages/dialects.
+- ✅ **Extended Context Window**: Supports up to 128K tokens.
+
 
 ## 📊 Benchmark Performance
 
@@ -62,14 +59,3 @@ model = QwenModel("qwen3-14b")
 response = model.generate("Explain the theory of relativity.")
 print(response)
 ```
-
-## 📈 Performance Metrics
-
-| Model             | Parameters | Context Length | Languages Supported | Benchmark Highlights             |
-| | | | |
-
-## 🎧 Audio Sample
-<audio controls class="w-full mt-2 rounded border border-lemur-green shadow">
-  <source src="/media/example.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-</audio>
