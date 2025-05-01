@@ -23,9 +23,10 @@ def verify_token(token, edit=False):
     return token in {READ_TOKEN, EDIT_TOKEN}
 
 ADMIN_CREDENTIALS = {
-    'username': 'admin',
-    'password': 'lemur123'
+    'username': os.getenv('ADMIN_USERNAME', 'admin'),
+    'password': os.getenv('ADMIN_PASSWORD', 'lemur123')
 }
+
 
 @app.route('/login', methods=['POST'])
 def login():
