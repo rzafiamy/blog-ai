@@ -17,8 +17,10 @@ EDIT_TOKEN = os.getenv('JWT_EDIT_TOKEN')
 PAGES_DIR = Path('pages')
 
 def verify_token(token, edit=False):
-    expected = EDIT_TOKEN if edit else READ_TOKEN
-    return token == expected
+    if edit:
+        return token == EDIT_TOKEN
+    return token in {READ_TOKEN, EDIT_TOKEN}
+
 
 # Hardcoded credentials (replace with database or auth service in production)
 ADMIN_CREDENTIALS = {
