@@ -100,10 +100,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (response.ok) {
         const page = await response.json();
         const htmlContent = sanitize(md.render(page.content));
+        const date = new Date(page.date);
+        const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}`;
+
+
         categoryGrid.innerHTML = `
           <article class="prose max-w-full prose-img:rounded-lg prose-video:my-4 prose-audio:my-4">
             <h1 class="text-3xl font-display text-lemur-green">${page.title}</h1>
-            <p class="text-gray-600">By ${page.author} on ${page.date}</p>
+            <p class="text-gray-600">By ${page.author} on ${formattedDate}</p>
             <div class="markdown-content">${htmlContent}</div>
           </article>
         `;
