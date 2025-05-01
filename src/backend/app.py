@@ -128,8 +128,12 @@ def update_page(id):
         return jsonify({'error': 'Page not found'}), 404
 
     data = request.json
+    content = data.get('content', '').strip()
+    if not content:
+        return jsonify({'error': 'Content is empty'}), 400
+
     post = frontmatter.Post(
-        data['content'],
+        content,
         **{
             'title': data['title'],
             'author': data['author'],
@@ -138,10 +142,11 @@ def update_page(id):
         }
     )
 
-    with open(file_path, 'w') as f:
+    with open(file_path, 'wb') as f:  # ✅ FIX HERE
         frontmatter.dump(post, f)
 
     return jsonify({'message': 'Page updated'})
+
 
 @app.route('/page/<path:id>', methods=['DELETE'])
 def delete_page(id):
