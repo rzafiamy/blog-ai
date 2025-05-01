@@ -1,134 +1,288 @@
-/* Custom AI Lemur Insights styles */
+/* styles.css */
+
+/* Base styles */
 body {
-    background: linear-gradient(135deg, #E6F5EC, #CFFFE5);
-    font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #E6F5EC, #CFFFE5);
+  font-family: 'Inter', sans-serif;
+  color: #1A3C34; /* bamboo-dark */
+  margin: 0;
+  padding: 0;
+}
+
+/* Container for content */
+#category-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Prose base styling */
+.prose {
+  max-width: 100%;
+  line-height: 1.75;
+  color: #1A3C34;
+}
+
+/* Headings */
+.prose h1 {
+  font-size: 2.5rem;
+  font-family: 'Poppins', sans-serif;
+  color: #00CC66; /* lemur-green */
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.prose h2 {
+  font-size: 1.75rem;
+  font-family: 'Poppins', sans-serif;
+  color: #00CC66;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.prose h3 {
+  font-size: 1.5rem;
+  font-family: 'Poppins', sans-serif;
+  color: #00CC66;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose h4 {
+  font-size: 1.25rem;
+  font-family: 'Poppins', sans-serif;
+  color: #00CC66;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Paragraphs and text */
+.prose p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.prose strong {
+  color: #00CC66;
+  font-weight: 600;
+}
+
+.prose a {
+  color: #00CC66;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.prose a:hover {
+  color: #66FF99;
+}
+
+/* Blockquotes */
+.prose blockquote {
+  padding: 1rem 1.5rem;
+  border-left: 4px solid #00CC66;
+  background-color: #E6F5EC;
+  border-radius: 0.5rem;
+  font-style: italic;
+  color: #2D4A44;
+  margin: 1.5rem 0;
+}
+
+/* Code and preformatted text */
+.prose code {
+  background-color: #F1F5F9;
+  color: #D6336C;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  font-family: 'Fira Code', monospace;
+}
+
+.prose pre {
+  background-color: #1E293B;
+  color: #E2E8F0;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  margin: 1.5rem 0;
+  line-height: 1.6;
+  font-family: 'Fira Code', monospace;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+/* Images, videos, and audio */
+.prose img,
+.prose video,
+.prose audio {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1.5rem auto;
+  display: block;
+}
+
+/* Tables */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+  background-color: #FFFFFF;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.prose th,
+.prose td {
+  border: 1px solid #D1D5DB;
+  padding: 1rem;
+  text-align: left;
+}
+
+.prose th {
+  background-color: #F0FDF4;
+  color: #065F46;
+  font-weight: 600;
+}
+
+.prose td {
+  background-color: #FFFFFF;
+}
+
+/* Lists */
+.prose ul,
+.prose ol {
+  margin: 1.5rem 0;
+  padding-left: 2rem;
+}
+
+.prose ul li,
+.prose ol li {
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.prose ul li::marker,
+.prose ol li::marker {
+  color: #00CC66;
+}
+
+/* Markdown content container */
+.markdown-content {
+  background-color: #FFFFFF;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Emoji compatibility */
+.prose :not(pre) > code:has(span.emoji),
+.markdown-content .emoji {
+  font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif;
+}
+
+/* Input and button styles */
+input,
+textarea {
+  border: 1px solid #00CC66;
+  background-color: #FFFFFF;
+  color: #1A3C34;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 204, 102, 0.3);
+  background-color: #F8FAFC;
+}
+
+button {
+  background-color: #00CC66;
+  color: #FFFFFF;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #66FF99;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(102, 255, 153, 0.3);
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .prose h1 {
+    font-size: 2rem;
   }
-  
-  .prose-invert {
-    color: #1A3C34;
+
+  .prose h2 {
+    font-size: 1.5rem;
   }
-  
-  .prose-invert h1,
-  .prose-invert h2,
-  .prose-invert h3 {
-    color: #00CC66;
+
+  .prose p,
+  .prose ul li,
+  .prose ol li {
+    font-size: 1rem;
   }
-  
-  input,
-  textarea {
-    border: 1px solid #00CC66;
-    transition: all 0.3s ease;
-    background-color: #FFFFFF;
-    color: #1A3C34;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
+
+  .prose table {
+    font-size: 0.85rem;
   }
-  
-  input:focus,
-  textarea:focus {
-    outline: none;
-    box-shadow: 0 0 10px rgba(0, 204, 102, 0.5);
-    background-color: #F8FAFC;
+
+  .prose th,
+  .prose td {
+    padding: 0.5rem;
   }
-  
-  button {
-    transition: all 0.3s ease;
-    background-color: #00CC66;
-    color: #FFFFFF;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
+
+  #category-grid {
+    padding: 1rem;
   }
-  
-  button:hover {
-    transform: translateY(-2px);
-    background-color: #66FF99;
-    box-shadow: 0 4px 10px rgba(102, 255, 153, 0.5);
+
+  .markdown-content {
+    padding: 1rem;
   }
-  
-  /* Modal styles */
-  #admin-modal {
-    transition: opacity 0.3s ease;
+}
+
+@media screen and (max-width: 480px) {
+  .prose h1 {
+    font-size: 1.75rem;
   }
-  
-  #admin-modal.hidden {
-    opacity: 0;
-    pointer-events: none;
+
+  .prose h2 {
+    font-size: 1.25rem;
   }
-  
-  #admin-modal > div {
-    max-height: 90vh;
-    overflow-y: auto;
+
+  .prose pre {
+    padding: 1rem;
+    font-size: 0.8rem;
   }
-  
-  #admin-modal button svg {
-    transition: stroke 0.3s ease;
-  }
-  
-  #admin-modal button:hover svg {
-    stroke: #FFFFFF;
-  }
-  
-  #admin-modal .edit-btn,
-  #admin-modal .delete-btn {
-    background: none;
-    padding: 0;
-  }
-  
-  #admin-modal .edit-btn:hover {
-    transform: none;
-    box-shadow: none;
-  }
-  
-  #admin-modal .delete-btn:hover {
-    transform: none;
-    box-shadow: none;
-  }
-  
-  /* Icon styles */
-  button svg {
-    transition: stroke 0.3s ease;
-  }
-  
-  button:hover svg {
-    stroke: #FFFFFF;
-  }
-  
-  button.bg-gray-200 svg {
-    stroke: #1A3C34;
-  }
-  
-  button.bg-gray-200:hover svg {
-    stroke: #FFFFFF;
-  }
-  
-  /* Search input */
-  input#search-input {
-    padding-left: 2.5rem;
-  }
-  
-  /* Lazy-loaded images */
-  img.lazy {
-    opacity: 0;
-    transition: opacity 0.5s ease-in;
-  }
-  
-  img.lazy.loaded {
-    opacity: 1;
-  }
-  
-  /* Card hover effects */
-  .grid > div {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .grid > div:hover {
-    box-shadow: 0 6px 12px rgba(0, 204, 102, 0.3);
-  }
-  
-  /* Smooth scroll behavior */
-  html {
-    scroll-behavior: smooth;
-  }
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Lazy-loaded images */
+img.lazy {
+  opacity: 0;
+  transition: opacity 0.5s ease-in;
+}
+
+img.lazy.loaded {
+  opacity: 1;
+}

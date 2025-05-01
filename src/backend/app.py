@@ -21,8 +21,6 @@ def verify_token(token, edit=False):
         return token == EDIT_TOKEN
     return token in {READ_TOKEN, EDIT_TOKEN}
 
-
-# Hardcoded credentials (replace with database or auth service in production)
 ADMIN_CREDENTIALS = {
     'username': 'admin',
     'password': 'lemur123'
@@ -56,16 +54,19 @@ def get_pages():
                 if len(parts) < 3:
                     continue
                 metadata = parts[1]
-                meta = dict(line.split(': ', 1) for line in metadata.strip().split('\n'))
+                meta = dict(
+                    line.split(': ', 1) for line in metadata.strip().split('\n') if ': ' in line
+                )
                 pages.append({
                     'id': str(md_file.relative_to(PAGES_DIR)),
                     'title': meta.get('title'),
-                    'category': md_file.parent.parent.name,
+                    'category': md_file.parent.parent.name if md_file.parent.parent != PAGES_DIR else '',
                     'section': md_file.parent.name,
                     'author': meta.get('author'),
+                    'image': meta.get('image', None),  # Optional image
                     'date': meta.get('date')
                 })
-        except Exception:
+        except Exception as e:
             continue
     return jsonify(pages)
 
@@ -89,14 +90,16 @@ def get_page(id):
             return jsonify({'error': 'Invalid page format'}), 400
         metadata = parts[1]
         body = parts[2]
-        meta = dict(line.split(': ', 1) for line in metadata.strip().split('\n'))
-        html_content = markdown.markdown(body)
+        meta = dict(
+            line.split(': ', 1) for line in metadata.strip().split('\n') if ': ' in line
+        )
         return jsonify({
             'id': id,
             'title': meta.get('title'),
             'author': meta.get('author'),
+            'image': meta.get('image', None),
             'date': meta.get('date'),
-            'content': body  # Return raw markdown for editing
+            'content': body
         })
 
 @app.route('/page', methods=['POST'])
@@ -110,10 +113,16 @@ def create_page():
     file_path = PAGES_DIR / data['category'] / data['section'] / file_name
     file_path.parent.mkdir(parents=True, exist_ok=True)
 
+    image_line = f"image: {data['image']}" if data.get('image') else ''
+    metadata = '\n'.join(filter(None, [
+        f"title: {data['title']}",
+        f"author: {data['author']}",
+        image_line,
+        f"date: {datetime.now().strftime('%Y-%m-%d')}"
+    ]))
+
     content = f"""---
-title: {data['title']}
-author: {data['author']}
-date: {datetime.now().strftime('%Y-%m-%d')}
+{metadata}
 ---
 {data['content']}
 """
@@ -132,10 +141,16 @@ def update_page(id):
     if not file_path.exists():
         return jsonify({'error': 'Page not found'}), 404
 
+    image_line = f"image: {data['image']}" if data.get('image') else ''
+    metadata = '\n'.join(filter(None, [
+        f"title: {data['title']}",
+        f"author: {data['author']}",
+        image_line,
+        f"date: {data['date']}"
+    ]))
+
     content = f"""---
-title: {data['title']}
-author: {data['author']}
-date: {data['date']}
+{metadata}
 ---
 {data['content']}
 """
@@ -155,6 +170,42 @@ def delete_page(id):
 
     file_path.unlink()
     return jsonify({'message': 'Page deleted'})
+
+@app.route('/categories', methods=['GET'])
+def get_categories():
+    token = request.headers.get('Authorization', '').replace('Bearer ', '')
+    if not verify_token(token):
+        return jsonify({'error': 'Invalid token'}), 401
+
+    try:
+        categories = [
+            d.name for d in PAGES_DIR.iterdir()
+            if d.is_dir()
+        ]
+        return jsonify({'categories': categories})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
+@app.route('/sections/<category>', methods=['GET'])
+def get_sections(category):
+    token = request.headers.get('Authorization', '').replace('Bearer ', '')
+    if not verify_token(token):
+        return jsonify({'error': 'Invalid token'}), 401
+
+    category_path = PAGES_DIR / category
+    if not category_path.exists() or not category_path.is_dir():
+        return jsonify({'error': 'Category not found'}), 404
+
+    try:
+        sections = [
+            d.name for d in category_path.iterdir()
+            if d.is_dir()
+        ]
+        return jsonify({'sections': sections})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=os.getenv('FLASK_ENV') == 'development')

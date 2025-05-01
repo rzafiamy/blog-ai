@@ -148,7 +148,8 @@ document.addEventListener('DOMContentLoaded', () => {
       author: $('author')?.value,
       category: $('category')?.value,
       section: $('section')?.value,
-      content: $('content')?.value,
+      content: $('content')?.value.replace(/\r\n|\r/g, '\n').trim(),
+      image: $('image')?.value || null,
       date: editingPageId ? new Date().toISOString().split('T')[0] : undefined,
     };
 
@@ -195,7 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
             $('author').value = page.author;
             $('category').value = page.id.split('/')[0];
             $('section').value = page.id.split('/')[1];
-            $('content').value = page.content;
+            $('content').value = (page.content || '').trim();
+            $('image').value = page.image || '';
             editingPageId = id;
             if (modalTitle) modalTitle.textContent = 'Edit Page';
             const submitBtn = postForm?.querySelector('button[type="submit"]');
