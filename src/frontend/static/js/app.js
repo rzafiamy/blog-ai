@@ -12,6 +12,13 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentPageIndex = 0;
   let activeCategory = null;
 
+  function slugify(title) {
+    return title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
   async function fetchPages() {
     try {
       const response = await fetch('/pages', {
@@ -55,16 +62,19 @@ document.addEventListener('DOMContentLoaded', () => {
         <section class="mb-12">
           <h2 class="text-2xl font-bold text-lemur-green font-display mb-6">${category}</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            ${catPages.map((p) => `
-              <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:scale-[1.02] transition-transform duration-300">
-                ${p.image ? `<img src="${p.image}" alt="${p.title}" class="w-full h-40 object-cover">` : `<img src="https://placehold.co/400x200?text=${encodeURIComponent(p.title)}" alt="${p.title}" class="w-full h-40 object-cover">`}
-                <div class="p-4">
-                  <h3 class="text-xl font-semibold text-lemur-green mb-2">${p.title}</h3>
-                  <p class="text-sm text-gray-600">By ${p.author} on ${p.date}</p>
-                  <button data-id="${p.id}" class="mt-3 bg-lemur-green text-white px-4 py-1 rounded-lg text-sm font-bold hover:bg-accent-green transition">Read More</button>
+            ${catPages.map((p) => {
+              const slug = slugify(p.title);
+              return `
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:scale-[1.02] transition-transform duration-300">
+                  ${p.image ? `<img src="${p.image}" alt="${p.title}" class="w-full h-40 object-cover">` : `<img src="https://placehold.co/400x200?text=${encodeURIComponent(p.title)}" alt="${p.title}" class="w-full h-40 object-cover">`}
+                  <div class="p-4">
+                    <h3 class="text-xl font-semibold text-lemur-green mb-2">${p.title}</h3>
+                    <p class="text-sm text-gray-600">By ${p.author} on ${p.date}</p>
+                    <button data-id="${p.id}" class="mt-3 bg-lemur-green text-white px-4 py-1 rounded-lg text-sm font-bold hover:bg-accent-green transition">Read More</button>
+                  </div>
                 </div>
-              </div>
-            `).join('')}
+              `;
+            }).join('')}
           </div>
         </section>
       `;
@@ -75,7 +85,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  async function loadPage(id) {
+  function loadPage(id) {
+    const page = pages.find(p => p.id === id);
+    if (!page) return;
+    history.pushState({ pageId: id }, '', `/p/${id}`);
+    fetchAndDisplayPage(id);
+  }
+
+  async function fetchAndDisplayPage(id) {
     try {
       const response = await fetch(`/page/${id}`, {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('readToken') || 'read-token-123'}` },
@@ -101,9 +118,24 @@ document.addEventListener('DOMContentLoaded', () => {
     currentPageIndex = pages.findIndex((p) => p.id === id);
     prevPost.style.display = currentPageIndex > 0 ? 'block' : 'none';
     nextPost.style.display = currentPageIndex < pages.length - 1 ? 'block' : 'none';
-    if (currentPageIndex > 0) prevPost.href = `#${pages[currentPageIndex - 1].id}`;
-    if (currentPageIndex < pages.length - 1) nextPost.href = `#${pages[currentPageIndex + 1].id}`;
+    if (currentPageIndex > 0) {
+      const prev = pages[currentPageIndex - 1];
+      prevPost.href = `/p/${prev.id}-${slugify(prev.title)}`;
+    }
+    if (currentPageIndex < pages.length - 1) {
+      const next = pages[currentPageIndex + 1];
+      nextPost.href = `/p/${next.id}-${slugify(next.title)}`;
+    }
   }
+
+  window.addEventListener('popstate', (event) => {
+    const pageId = event.state?.pageId;
+    if (pageId) {
+      fetchAndDisplayPage(pageId);
+    } else {
+      renderCategoryGrid();
+    }
+  });
 
   function levenshtein(a, b) {
     const matrix = Array.from({ length: b.length + 1 }, (_, i) => [i]);
@@ -135,16 +167,19 @@ document.addEventListener('DOMContentLoaded', () => {
         <section class="mb-12">
           <h2 class="text-2xl font-bold text-lemur-green font-display mb-6">${category}</h2>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            ${catPages.map((p) => `
-              <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:scale-[1.02] transition-transform duration-300">
-                <img src="https://placehold.co/400x200?text=${encodeURIComponent(p.title)}" alt="${p.title}" class="w-full h-40 object-cover">
-                <div class="p-4">
-                  <h3 class="text-xl font-semibold text-lemur-green mb-2">${p.title}</h3>
-                  <p class="text-sm text-gray-600">By ${p.author} on ${p.date}</p>
-                  <button data-id="${p.id}" class="mt-3 bg-lemur-green text-white px-4 py-1 rounded-lg text-sm font-bold hover:bg-accent-green transition">Read More</button>
+            ${catPages.map((p) => {
+              const slug = slugify(p.title);
+              return `
+                <div class="bg-white rounded-lg shadow-lg overflow-hidden hover:scale-[1.02] transition-transform duration-300">
+                  <img src="https://placehold.co/400x200?text=${encodeURIComponent(p.title)}" alt="${p.title}" class="w-full h-40 object-cover">
+                  <div class="p-4">
+                    <h3 class="text-xl font-semibold text-lemur-green mb-2">${p.title}</h3>
+                    <p class="text-sm text-gray-600">By ${p.author} on ${p.date}</p>
+                    <button data-id="${p.id}" class="mt-3 bg-lemur-green text-white px-4 py-1 rounded-lg text-sm font-bold hover:bg-accent-green transition">Read More</button>
+                  </div>
                 </div>
-              </div>
-            `).join('')}
+              `;
+            }).join('')}
           </div>
         </section>
       `;
@@ -155,5 +190,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  fetchPages();
+  // Initialize
+  fetchPages().then(() => {
+    const match = window.location.pathname.match(/^\/p\/(.+)$/);
+    if (match) {
+      const id = decodeURIComponent(match[1]); // gets the full `tech/ai/intro-to-ai.md`
+      console.log(id)
+      fetchAndDisplayPage(id);
+    }
+  });
+  
 });

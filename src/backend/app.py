@@ -8,7 +8,8 @@ from dotenv import load_dotenv
 # Load .env file
 load_dotenv()
 
-app = Flask(__name__, static_folder='static', template_folder='templates')
+# NEW (leaner)
+app = Flask(__name__)
 
 # Configuration
 SECRET_KEY = os.getenv('FLASK_SECRET_KEY')
@@ -34,10 +35,6 @@ def login():
     if username == ADMIN_CREDENTIALS['username'] and password == ADMIN_CREDENTIALS['password']:
         return jsonify({'token': EDIT_TOKEN})
     return jsonify({'error': 'Invalid credentials'}), 401
-
-@app.route('/')
-def index():
-    return render_template('index.html')
 
 @app.route('/pages', methods=['GET'])
 def get_pages():
